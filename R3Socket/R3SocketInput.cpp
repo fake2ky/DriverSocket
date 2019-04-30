@@ -12,7 +12,8 @@ int _tmain(int argc, _TCHAR* argv[])
 	if (hDevice == INVALID_HANDLE_VALUE)
 	{	
 		DWORD err = GetLastError();
-		printf("Failed To Obtain Device Handle! err:%u", err);
+		printf("Failed To Obtain Device Handle! GetLastError:%u", err);
+		getchar();
 		return -1;
 	}
 
@@ -21,7 +22,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	memset(buffer, 0x00, 20);
 	UCHAR in ;
 
-	// 接收用户输入的pid
+	// 接收用户输入
 	printf("User input : ");
 	gets_s(buffer);
 	//scanf_s("%d", buffer);

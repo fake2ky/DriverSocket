@@ -48,9 +48,9 @@ void InstallHook();
 //卸载钩子
 void UninstallHook();
 //关闭页写入保护
-void ShutPageProtect();
+void WPOFF();
 //开启页写入保护
-void OpenPageProtect();
+void WPON();
 
 //卸载驱动
 void OutLoad(DRIVER_OBJECT* obj)
@@ -71,27 +71,28 @@ void InstallHook()
 	g_OldZwOpenProcess = (FuZwOpenProcess)
 	g_pServiceTable->ntoskrnl.ServiceTableBase[0xbe];
 	//4.关闭页只读保护
-	ShutPageProtect();
+	WPOFF();
 	//5.写入自己的函数到SSDT表内
 	g_pServiceTable->ntoskrnl.ServiceTableBase[0xbe] = (ULONG)MyZwOpenProcess;
 	//6.开启页只读保护
-	OpenPageProtect();
+	WPON();
 }
 
 //卸载钩子
 void UninstallHook()
 {
 	//1.关闭页只读保护
-	ShutPageProtect();
+	WPOFF();
 	//2.写入原来的函数到SSDT表内
 	g_pServiceTable->ntoskrnl.ServiceTableBase[0xbe]
 		= (ULONG)g_OldZwOpenProcess;
 	//3.开启页只读保护
-	OpenPageProtect();
+	WPON();
 }
 
+
 //关闭页只读保护
-void _declspec(naked) ShutPageProtect()
+void _declspec(naked) WPOFF()
 {
 	__asm
 	{
@@ -105,7 +106,7 @@ void _declspec(naked) ShutPageProtect()
 }
 
 //开启页只读保护
-void _declspec(naked) OpenPageProtect()
+void _declspec(naked) WPON()
 {
 	__asm
 	{

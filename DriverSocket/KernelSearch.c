@@ -84,7 +84,6 @@ PVOID GetModuleBase(CHAR *ModuleName)
 	RTL_PROCESS_MODULE_INFORMATION *ModuleInformation = NULL;
 
 	ZwQuerySystemInformation(SystemModuleInformation, &ProcessModules, 4, &ReturnLength);
-	_asm int 3;
 	if (ReturnLength)
 	{
 		ProcessModules = (PRTL_PROCESS_MODULES)ExAllocatePool((POOL_TYPE)SystemModuleInformation, 2 * ReturnLength);
